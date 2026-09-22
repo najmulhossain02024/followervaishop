@@ -3,51 +3,51 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Dashboard | Follower Vai Shop</title>
+  <title>Admin Management | Follower Vai Shop</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body class="bg-slate-950 text-slate-100 p-4 md:p-8">
 
-  <div class="max-w-6xl mx-auto">
-    <!-- Admin Topbar -->
-    <div class="flex items-center justify-between border-b border-slate-800 pb-4 mb-6">
+  <div class="max-w-6xl mx-auto space-y-8">
+
+    <!-- Top Bar -->
+    <div class="flex items-center justify-between border-b border-slate-800 pb-4">
       <div>
         <h1 class="text-2xl font-black text-white">Admin Control Center</h1>
-        <p class="text-xs text-cyan-400">Follower Vai Shop Management</p>
+        <p class="text-xs text-cyan-400 font-semibold">Payment Gateways & Order Verification</p>
       </div>
       <button onclick="location.reload()" class="px-3 py-1.5 bg-slate-800 border border-slate-700 rounded-xl text-xs hover:bg-slate-700">
-        <i class="fa-solid fa-arrows-rotate mr-1"></i> রিফ্রেশ
+        <i class="fa-solid fa-rotate mr-1"></i> রিফ্রেশ
       </button>
     </div>
 
-    <!-- Payment Numbers Update Setting -->
-    <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl mb-8">
-      <h2 class="text-base font-bold text-white mb-3 flex items-center gap-2">
-        <i class="fa-solid fa-mobile-screen-button text-cyan-400"></i> পেমেন্ট নম্বর আপডেট করুন (বিকাশ / নগদ)
-      </h2>
-      <form onsubmit="savePaymentSettings(event)" class="grid grid-cols-1 md:grid-cols-4 gap-3">
-        <select id="admMethod" class="bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white">
-          <option value="1|bKash">bKash (ID 1)</option>
-          <option value="2|Nagad">Nagad (ID 2)</option>
-        </select>
-        <input type="text" id="admNumber" required placeholder="নম্বর (উদাঃ 017...)" class="bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white">
-        <input type="text" id="admType" required placeholder="টাইপ (উদাঃ Send Money)" class="bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white">
-        <button type="submit" class="bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold rounded-xl text-sm py-2">
-          সেভ করুন
+    <!-- 1. PAYMENT GATEWAYS CRUD MANAGEMENT -->
+    <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-base font-bold text-white flex items-center gap-2">
+          <i class="fa-solid fa-wallet text-cyan-400"></i> পেমেন্ট মেথড পরিচালনা (Add / Edit / Delete)
+        </h2>
+        <button onclick="openGatewayModal()" class="px-3 py-1.5 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs rounded-xl flex items-center gap-1">
+          <i class="fa-solid fa-plus"></i> নতুন গেটওয়ে যোগ করুন
         </button>
-      </form>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4" id="adminGatewaysList">
+        <p class="text-xs text-slate-500 col-span-4">গেটওয়ে লোড হচ্ছে...</p>
+      </div>
     </div>
 
-    <!-- Deposits Approvals Section -->
-    <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl mb-8">
+    <!-- 2. DEPOSITS QUEUE (ADD FUND APPROVALS) -->
+    <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl">
       <h2 class="text-base font-bold text-white mb-3 flex items-center gap-2">
-        <i class="fa-solid fa-money-check-dollar text-emerald-400"></i> পেন্ডিং ডিপোজিট রিকোয়েস্ট (Add Fund Approvals)
+        <i class="fa-solid fa-money-bill-transfer text-emerald-400"></i> ডিপোজিট রিকোয়েস্ট হিস্টোরি
       </h2>
       <div class="overflow-x-auto">
         <table class="w-full text-left text-xs text-slate-300">
           <thead class="bg-slate-800 text-slate-400 uppercase text-[10px]">
             <tr>
+              <th class="p-3">Fund ID</th>
               <th class="p-3">User</th>
               <th class="p-3">Method</th>
               <th class="p-3">Sender No</th>
@@ -58,145 +58,197 @@
             </tr>
           </thead>
           <tbody id="adminDepositsTable" class="divide-y divide-slate-800">
-            <tr><td colspan="7" class="p-4 text-center text-slate-500">লোড হচ্ছে...</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <!-- Orders Management Section -->
-    <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl">
-      <h2 class="text-base font-bold text-white mb-3 flex items-center gap-2">
-        <i class="fa-solid fa-list-check text-cyan-400"></i> সকল ইউজার অর্ডার
-      </h2>
-      <div class="overflow-x-auto">
-        <table class="w-full text-left text-xs text-slate-300">
-          <thead class="bg-slate-800 text-slate-400 uppercase text-[10px]">
-            <tr>
-              <th class="p-3">ID</th>
-              <th class="p-3">User</th>
-              <th class="p-3">Service</th>
-              <th class="p-3">Link</th>
-              <th class="p-3">Qty</th>
-              <th class="p-3">Price</th>
-              <th class="p-3">Status</th>
-              <th class="p-3 text-right">Action</th>
-            </tr>
-          </thead>
-          <tbody id="adminOrdersTable" class="divide-y divide-slate-800">
             <tr><td colspan="8" class="p-4 text-center text-slate-500">লোড হচ্ছে...</td></tr>
           </tbody>
         </table>
       </div>
     </div>
+
+  </div>
+
+  <!-- GATEWAY ADD / EDIT MODAL -->
+  <div id="gtwModal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-700 w-full max-w-md rounded-2xl p-5 shadow-2xl">
+      <div class="flex justify-between items-center mb-4">
+        <h3 id="gtwModalTitle" class="font-bold text-white text-base">নতুন পেমেন্ট গেটওয়ে</h3>
+        <button onclick="closeGatewayModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <form onsubmit="saveGateway(event)" class="space-y-3">
+        <input type="hidden" id="gtwId">
+        
+        <div>
+          <label class="block text-xs text-slate-300 font-semibold mb-1">গেটওয়ের নাম (উদাঃ bKash / Nagad / Binance)</label>
+          <input type="text" id="gtwName" required class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:border-cyan-400">
+        </div>
+
+        <div>
+          <label class="block text-xs text-slate-300 font-semibold mb-1">টাইপ (উদাঃ Send Money / Personal / Pay ID)</label>
+          <input type="text" id="gtwType" required class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:border-cyan-400">
+        </div>
+
+        <div>
+          <label class="block text-xs text-slate-300 font-semibold mb-1">নম্বর বা Pay ID</label>
+          <input type="text" id="gtwNumber" required class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:border-cyan-400">
+        </div>
+
+        <div>
+          <label class="block text-xs text-slate-300 font-semibold mb-1">লোগো ছবি লিংক (Icon/Logo URL)</label>
+          <input type="url" id="gtwLogo" placeholder="https://..." class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:border-cyan-400">
+        </div>
+
+        <div>
+          <label class="block text-xs text-slate-300 font-semibold mb-1">দিক-নির্দেশনা (Instructions - লাইন আকারে লিখুন)</label>
+          <textarea id="gtwInstructions" rows="4" required placeholder="1. Dial *247#&#10;2. Select Send Money&#10;3. Enter Number: {NUMBER}" class="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-xs text-white focus:border-cyan-400"></textarea>
+          <p class="text-[10px] text-slate-400 mt-1">নম্বরের জায়গায় <b>{NUMBER}</b> লিখলে স্বয়ংক্রিয়ভাবে নম্বর বসে যাবে।</p>
+        </div>
+
+        <button type="submit" class="w-full py-2.5 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold rounded-xl text-sm">
+          সেভ করুন
+        </button>
+      </form>
+    </div>
   </div>
 
   <script>
     const WORKER_URL = "https://worker.followervai.shop";
+    let adminGateways = [];
 
     window.addEventListener("DOMContentLoaded", () => {
+      loadGatewaysList();
       loadAdminDeposits();
-      loadAdminOrders();
     });
 
-    // 1. Deposits Management
+    // 1. Gateways List & CRUD
+    async function loadGatewaysList() {
+      const res = await fetch(`${WORKER_URL}/api/gateways`);
+      const data = await res.json();
+      adminGateways = data.gateways || [];
+
+      const container = document.getElementById("adminGatewaysList");
+      if (!adminGateways.length) {
+        container.innerHTML = `<p class="text-xs text-slate-500 col-span-4">কোনো গেটওয়ে নেই।</p>`;
+        return;
+      }
+
+      container.innerHTML = adminGateways.map(g => `
+        <div class="bg-slate-800 border border-slate-700 p-4 rounded-xl flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <span class="font-bold text-white text-sm">${g.name}</span>
+              <span class="text-[10px] px-2 py-0.5 rounded bg-slate-900 text-cyan-400">${g.type}</span>
+            </div>
+            <p class="text-xs font-mono text-slate-300">${g.number}</p>
+          </div>
+          <div class="flex gap-2 mt-4 pt-3 border-t border-slate-700/60">
+            <button onclick="editGateway(${g.id})" class="flex-1 py-1 text-xs bg-slate-700 hover:bg-slate-600 rounded text-slate-200">Edit</button>
+            <button onclick="deleteGateway(${g.id})" class="flex-1 py-1 text-xs bg-rose-900/40 text-rose-300 hover:bg-rose-900/60 rounded">Delete</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function openGatewayModal() {
+      document.getElementById("gtwId").value = "";
+      document.getElementById("gtwName").value = "";
+      document.getElementById("gtwType").value = "";
+      document.getElementById("gtwNumber").value = "";
+      document.getElementById("gtwLogo").value = "";
+      document.getElementById("gtwInstructions").value = "";
+      document.getElementById("gtwModalTitle").innerText = "নতুন পেমেন্ট গেটওয়ে যোগ করুন";
+      document.getElementById("gtwModal").classList.remove("hidden");
+    }
+
+    function closeGatewayModal() {
+      document.getElementById("gtwModal").classList.add("hidden");
+    }
+
+    function editGateway(id) {
+      const g = adminGateways.find(x => x.id === id);
+      if (!g) return;
+
+      document.getElementById("gtwId").value = g.id;
+      document.getElementById("gtwName").value = g.name;
+      document.getElementById("gtwType").value = g.type;
+      document.getElementById("gtwNumber").value = g.number;
+      document.getElementById("gtwLogo").value = g.logo_url || "";
+      document.getElementById("gtwInstructions").value = g.instructions;
+      document.getElementById("gtwModalTitle").innerText = "পেমেন্ট গেটওয়ে এডিট করুন";
+      document.getElementById("gtwModal").classList.remove("hidden");
+    }
+
+    async function saveGateway(e) {
+      e.preventDefault();
+      const id = document.getElementById("gtwId").value;
+      const name = document.getElementById("gtwName").value.trim();
+      const type = document.getElementById("gtwType").value.trim();
+      const number = document.getElementById("gtwNumber").value.trim();
+      const logo_url = document.getElementById("gtwLogo").value.trim();
+      const instructions = document.getElementById("gtwInstructions").value.trim();
+
+      await fetch(`${WORKER_URL}/api/admin/gateways/save`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: id ? Number(id) : null, name, type, number, logo_url, instructions })
+      });
+
+      closeGatewayModal();
+      loadGatewaysList();
+    }
+
+    async function deleteGateway(id) {
+      if (!confirm("আপনি কি নিশ্চিত এই গেটওয়েটি মুছে ফেলতে চান?")) return;
+      await fetch(`${WORKER_URL}/api/admin/gateways/delete`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id })
+      });
+      loadGatewaysList();
+    }
+
+    // 2. Deposits Handling
     async function loadAdminDeposits() {
       const res = await fetch(`${WORKER_URL}/api/admin/deposits`);
       const data = await res.json();
       const tbody = document.getElementById("adminDepositsTable");
 
-      if (!data.deposits.length) {
-        tbody.innerHTML = `<tr><td colspan="7" class="p-4 text-center text-slate-500">কোনো ডিপোজিট আবেদন নেই।</td></tr>`;
+      if (!data.deposits || !data.deposits.length) {
+        tbody.innerHTML = `<tr><td colspan="8" class="p-4 text-center text-slate-500">কোনো ডিপোজিট আবেদন নেই।</td></tr>`;
         return;
       }
 
       tbody.innerHTML = data.deposits.map(d => `
         <tr class="hover:bg-slate-800/40">
+          <td class="p-3 font-mono text-cyan-400 font-bold">${d.fund_id || '#fund-'+d.id}</td>
           <td class="p-3 font-semibold text-white">${d.user_identifier}</td>
           <td class="p-3">${d.method}</td>
           <td class="p-3">${d.sender_number}</td>
-          <td class="p-3 font-mono text-cyan-400">${d.trx_id}</td>
-          <td class="p-3 font-bold text-white">৳${d.amount}</td>
-          <td class="p-3"><span class="px-2 py-0.5 rounded text-[10px] ${d.status === 'Approved' ? 'bg-emerald-500/20 text-emerald-400' : d.status === 'Rejected' ? 'bg-red-500/20 text-red-400' : 'bg-amber-500/20 text-amber-400'}">${d.status}</span></td>
+          <td class="p-3 font-mono text-amber-400 font-bold">${d.trx_id}</td>
+          <td class="p-3 font-black text-emerald-400">৳${d.amount}</td>
+          <td class="p-3">
+            <span class="px-2 py-0.5 rounded text-[10px] ${
+              d.status === 'Approved' ? 'bg-emerald-500/20 text-emerald-400' :
+              d.status === 'Rejected' ? 'bg-rose-500/20 text-rose-400' : 'bg-amber-500/20 text-amber-400'
+            }">${d.status}</span>
+          </td>
           <td class="p-3 text-right space-x-1">
             ${d.status === 'Pending' ? `
-              <button onclick="handleDepositAction(${d.id}, 'Approve')" class="px-2 py-1 bg-emerald-600 hover:bg-emerald-500 text-white rounded font-bold">Approve</button>
-              <button onclick="handleDepositAction(${d.id}, 'Reject')" class="px-2 py-1 bg-red-600 hover:bg-red-500 text-white rounded font-bold">Reject</button>
-            ` : '<span class="text-slate-600 text-[11px]">Done</span>'}
+              <button onclick="handleDepositAction(${d.id}, 'Approve')" class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-500 text-white rounded font-bold">Approve</button>
+              <button onclick="handleDepositAction(${d.id}, 'Reject')" class="px-2.5 py-1 bg-rose-600 hover:bg-rose-500 text-white rounded font-bold">Reject</button>
+            ` : '<span class="text-slate-600 text-[11px]">প্রসেসড</span>'}
           </td>
         </tr>
       `).join('');
     }
 
     async function handleDepositAction(id, action) {
-      if (!confirm(`আপনি কি নিশ্চিত এটি ${action} করবেন?`)) return;
+      if (!confirm(`আপনি কি নিশ্চিত এই আবেদনটি ${action} করবেন?`)) return;
       await fetch(`${WORKER_URL}/api/admin/deposits/action`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ depositId: id, action })
       });
       loadAdminDeposits();
-    }
-
-    // 2. Orders Management
-    async function loadAdminOrders() {
-      const res = await fetch(`${WORKER_URL}/api/admin/orders`);
-      const data = await res.json();
-      const tbody = document.getElementById("adminOrdersTable");
-
-      if (!data.orders.length) {
-        tbody.innerHTML = `<tr><td colspan="8" class="p-4 text-center text-slate-500">কোনো অর্ডার নেই।</td></tr>`;
-        return;
-      }
-
-      tbody.innerHTML = data.orders.map(o => `
-        <tr class="hover:bg-slate-800/40">
-          <td class="p-3 font-mono text-slate-400">#${o.id}</td>
-          <td class="p-3 text-slate-200">${o.user_identifier}</td>
-          <td class="p-3 font-bold text-white">${o.service_title}</td>
-          <td class="p-3 max-w-xs truncate"><a href="${o.target_link}" target="_blank" class="text-cyan-400 underline">${o.target_link}</a></td>
-          <td class="p-3">${o.quantity}</td>
-          <td class="p-3 font-bold text-white">৳${o.total_price}</td>
-          <td class="p-3">
-            <span class="px-2 py-0.5 rounded text-[10px] ${o.status === 'Completed' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-amber-500/20 text-amber-400'}">${o.status}</span>
-          </td>
-          <td class="p-3 text-right">
-            <select onchange="updateOrderStatus(${o.id}, this.value)" class="bg-slate-800 border border-slate-700 rounded px-2 py-1 text-slate-200 text-xs">
-              <option value="Processing" ${o.status === 'Processing' ? 'selected' : ''}>Processing</option>
-              <option value="Completed" ${o.status === 'Completed' ? 'selected' : ''}>Completed</option>
-              <option value="Cancelled" ${o.status === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
-            </select>
-          </td>
-        </tr>
-      `).join('');
-    }
-
-    async function updateOrderStatus(orderId, status) {
-      await fetch(`${WORKER_URL}/api/admin/orders/update`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ orderId, status })
-      });
-      alert("অর্ডার স্ট্যাটাস পরিবর্তন হয়েছে");
-      loadAdminOrders();
-    }
-
-    // 3. Update Payment Settings
-    async function savePaymentSettings(e) {
-      e.preventDefault();
-      const val = document.getElementById("admMethod").value.split("|");
-      const id = parseInt(val[0]);
-      const method_name = val[1];
-      const wallet_number = document.getElementById("admNumber").value.trim();
-      const type = document.getElementById("admType").value.trim();
-
-      await fetch(`${WORKER_URL}/api/admin/payment-settings/update`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id, method_name, wallet_number, type, instruction: `${method_name} পার্সোনাল নম্বরে ক্যাশইন/সেন্ড মানি করুন।` })
-      });
-
-      alert("পেমেন্ট মেথড সফলভাবে আপডেট করা হয়েছে!");
     }
   </script>
 </body>
