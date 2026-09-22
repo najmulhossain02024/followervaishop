@@ -1,385 +1,495 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Premium SMM Panel</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-<style>
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:'Poppins',sans-serif;
-}
-
-body{
-background:#0f172a;
-padding:20px;
-color:#fff;
-}
-
-.container{
-max-width:500px;
-margin:auto;
-}
-
-.header{
-text-align:center;
-margin-bottom:20px;
-}
-
-.header h1{
-font-size:28px;
-font-weight:700;
-}
-
-.header p{
-opacity:.7;
-}
-
-.card{
-background:#1e293b;
-border-radius:20px;
-padding:15px;
-margin-bottom:15px;
-box-shadow:0 5px 20px rgba(0,0,0,.3);
-}
-
-.balance-card{
-background:linear-gradient(135deg,#3b82f6,#9333ea);
-}
-
-.balance-title{
-font-size:14px;
-opacity:.9;
-}
-
-.balance-amount{
-font-size:30px;
-font-weight:700;
-margin-top:5px;
-}
-
-label{
-display:block;
-margin-bottom:8px;
-font-size:14px;
-font-weight:600;
-}
-
-select,input{
-width:100%;
-padding:14px;
-border:none;
-border-radius:12px;
-background:#334155;
-color:white;
-font-size:15px;
-}
-
-select{
-cursor:pointer;
-}
-
-.row{
-display:flex;
-gap:10px;
-}
-
-.col{
-flex:1;
-}
-
-.info-grid{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:10px;
-}
-
-.info-box{
-background:#334155;
-padding:15px;
-border-radius:15px;
-text-align:center;
-}
-
-.info-box h3{
-font-size:12px;
-opacity:.7;
-margin-bottom:5px;
-}
-
-.info-box p{
-font-size:18px;
-font-weight:700;
-}
-
-.total-card{
-text-align:center;
-background:linear-gradient(135deg,#10b981,#059669);
-}
-
-.total-card h2{
-font-size:14px;
-margin-bottom:10px;
-}
-
-.total-price{
-font-size:38px;
-font-weight:700;
-}
-
-.warning{
-background:#7f1d1d;
-padding:15px;
-border-radius:15px;
-margin-top:10px;
-display:none;
-}
-
-.warning h3{
-margin-bottom:5px;
-}
-
-.summary-item{
-display:flex;
-justify-content:space-between;
-margin-bottom:10px;
-}
-
-button{
-width:100%;
-padding:16px;
-border:none;
-border-radius:15px;
-background:linear-gradient(135deg,#3b82f6,#9333ea);
-color:white;
-font-size:16px;
-font-weight:700;
-cursor:pointer;
-}
-
-button:hover{
-opacity:.9;
-}
-
-.success{
-display:none;
-background:#065f46;
-padding:15px;
-border-radius:15px;
-text-align:center;
-margin-top:15px;
-}
-
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Follower Vai Shop | Best Social Media Services</title>
+  <!-- Tailwind CSS & FontAwesome -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body { font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+    .hide-scrollbar::-webkit-scrollbar { display: none; }
+    .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
 </head>
+<body class="bg-slate-900 text-slate-100 pb-24 select-none">
 
-<body>
+  <!-- Top App Bar -->
+  <header class="sticky top-0 z-30 bg-slate-800/95 backdrop-blur border-b border-slate-700 px-4 py-3 shadow-md">
+    <div class="max-w-md mx-auto flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center shadow-lg shadow-cyan-500/30">
+          <i class="fa-solid fa-bolt text-white text-lg"></i>
+        </div>
+        <div>
+          <h1 class="font-black text-lg tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">Follower Vai</h1>
+          <p class="text-[10px] text-cyan-400 font-semibold tracking-wide">DIGITAL SMM SHOP</p>
+        </div>
+      </div>
 
-<div class="container">
+      <!-- Auth State & Balance -->
+      <div id="topUserSection" class="flex items-center gap-2">
+        <!-- Injected via JS -->
+      </div>
+    </div>
+  </header>
 
-<div class="header">
-<h1>Premium SMM Panel</h1>
-<p>Fast Social Media Services</p>
-</div>
+  <!-- Main App View -->
+  <main class="max-w-md mx-auto px-4 pt-4">
 
-<div class="card balance-card">
-<div class="balance-title">Wallet Balance</div>
-<div class="balance-amount" id="balance">$20.00</div>
-</div>
+    <!-- Promo Banner Card -->
+    <div class="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 p-4 rounded-2xl shadow-xl mb-4 text-white relative overflow-hidden">
+      <div class="relative z-10">
+        <span class="bg-white/20 text-xs px-2 py-0.5 rounded-full font-medium">ইনস্ট্যান্ট ডেলিভারি ⚡</span>
+        <h2 class="text-xl font-black mt-2">সোশ্যাল মিডিয়া বুস্ট সার্ভিস</h2>
+        <p class="text-xs text-blue-100 mt-1">সবচেয়ে কম মূল্যে রিয়েল ফলোয়ার, লাইক ও ভিউ নিন নিমিষেই।</p>
+      </div>
+      <i class="fa-solid fa-rocket absolute -right-3 -bottom-3 text-7xl text-white/10"></i>
+    </div>
 
-<div class="card">
+    <!-- Social Media Filter Chips (Horizontal Scroll) -->
+    <div class="mb-4">
+      <h3 class="text-xs font-semibold text-slate-400 mb-2 uppercase tracking-wider">প্ল্যাটফর্ম সিলেক্ট করুন</h3>
+      <div class="flex gap-2 overflow-x-auto hide-scrollbar py-1" id="categoryTabs">
+        <button onclick="filterCategory('all')" class="cat-tab px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all bg-cyan-500 text-slate-950 shadow-md">
+          <i class="fa-solid fa-border-all"></i> All
+        </button>
+        <button onclick="filterCategory('facebook')" class="cat-tab px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all bg-slate-800 text-slate-300 border border-slate-700">
+          <i class="fab fa-facebook text-blue-500 text-sm"></i> Facebook
+        </button>
+        <button onclick="filterCategory('instagram')" class="cat-tab px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all bg-slate-800 text-slate-300 border border-slate-700">
+          <i class="fab fa-instagram text-pink-500 text-sm"></i> Instagram
+        </button>
+        <button onclick="filterCategory('tiktok')" class="cat-tab px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all bg-slate-800 text-slate-300 border border-slate-700">
+          <i class="fab fa-tiktok text-slate-200 text-sm"></i> TikTok
+        </button>
+        <button onclick="filterCategory('youtube')" class="cat-tab px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all bg-slate-800 text-slate-300 border border-slate-700">
+          <i class="fab fa-youtube text-red-500 text-sm"></i> YouTube
+        </button>
+        <button onclick="filterCategory('telegram')" class="cat-tab px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all bg-slate-800 text-slate-300 border border-slate-700">
+          <i class="fab fa-telegram text-sky-400 text-sm"></i> Telegram
+        </button>
+      </div>
+    </div>
 
-<label>Social Media</label>
-<select id="platform">
-<option>📘 Facebook</option>
-<option>📸 Instagram</option>
-<option>🎵 TikTok</option>
-<option>▶️ YouTube</option>
-<option>✈️ Telegram</option>
-<option>🐦 Twitter / X</option>
-<option>💼 LinkedIn</option>
-<option>📌 Pinterest</option>
-<option>👻 Snapchat</option>
-<option>🧵 Threads</option>
-</select>
+    <!-- Services List Container -->
+    <div id="servicesContainer" class="flex flex-col gap-3">
+      <!-- Service Cards Render Here -->
+      <div class="text-center py-12 text-slate-500 text-sm">
+        <i class="fa-solid fa-spinner fa-spin text-2xl mb-2 text-cyan-400"></i>
+        <p>সার্ভিসগুলো লোড হচ্ছে...</p>
+      </div>
+    </div>
 
-<br><br>
+  </main>
 
-<label>Service</label>
-<select id="service">
-<option value="5">Followers</option>
-<option value="3">Likes</option>
-<option value="4">Shares</option>
-<option value="8">Comments</option>
-<option value="2">Views</option>
-</select>
+  <!-- Bottom App Navigation Bar -->
+  <nav class="fixed bottom-0 left-0 right-0 z-40 bg-slate-850 border-t border-slate-700 bg-slate-800/95 backdrop-blur py-2">
+    <div class="max-w-md mx-auto grid grid-cols-4 text-center">
+      <a href="index.html" class="flex flex-col items-center justify-center text-cyan-400">
+        <i class="fa-solid fa-house text-lg"></i>
+        <span class="text-[11px] mt-1 font-medium">Home</span>
+      </a>
+      <a href="orders.html" class="flex flex-col items-center justify-center text-slate-400 hover:text-slate-200">
+        <i class="fa-solid fa-list-check text-lg"></i>
+        <span class="text-[11px] mt-1 font-medium">Orders</span>
+      </a>
+      <a href="payment.html" class="flex flex-col items-center justify-center text-slate-400 hover:text-slate-200">
+        <i class="fa-solid fa-wallet text-lg"></i>
+        <span class="text-[11px] mt-1 font-medium">Add Fund</span>
+      </a>
+      <a href="payment-history.html" class="flex flex-col items-center justify-center text-slate-400 hover:text-slate-200">
+        <i class="fa-solid fa-clock-rotate-left text-lg"></i>
+        <span class="text-[11px] mt-1 font-medium">History</span>
+      </a>
+    </div>
+  </nav>
 
-<br><br>
+  <!-- ORDER MODAL -->
+  <div id="orderModal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+    <div class="bg-slate-800 border border-slate-700 w-full max-w-md rounded-t-3xl sm:rounded-2xl p-5 shadow-2xl transition-all">
+      <div class="flex items-center justify-between border-b border-slate-700 pb-3 mb-3">
+        <h3 class="font-bold text-base text-white flex items-center gap-2">
+          <i id="modalServiceIcon" class="text-cyan-400"></i>
+          <span id="modalTitle" class="truncate max-w-[260px]">অর্ডার কনফার্ম করুন</span>
+        </h3>
+        <button onclick="closeOrderModal()" class="text-slate-400 hover:text-white text-lg"><i class="fa-solid fa-xmark"></i></button>
+      </div>
 
-<label>Country</label>
-<select id="country">
-<option value="1">🇧🇩 Bangladesh</option>
-<option value="2">🇺🇸 USA</option>
-<option value="1.8">🇬🇧 UK</option>
-<option value="1.7">🇨🇦 Canada</option>
-<option value="2.2">🇦🇺 Australia</option>
-<option value="1.9">🇩🇪 Germany</option>
-<option value="1.8">🇫🇷 France</option>
-<option value="1.2">🇮🇳 India</option>
-<option value="1.3">🇧🇷 Brazil</option>
-<option value="1.7">🇮🇹 Italy</option>
-</select>
+      <div class="text-xs bg-slate-900/60 p-3 rounded-xl border border-slate-700/50 mb-4 space-y-1">
+        <div class="flex justify-between text-slate-400"><span>প্রতি ১,০০০ দাম:</span> <span id="modalRate" class="text-cyan-400 font-bold">৳0</span></div>
+        <div class="flex justify-between text-slate-400"><span>মিনিমাম / ম্যাক্সিমাম:</span> <span id="modalMinMax" class="text-slate-200">0 / 0</span></div>
+        <div class="flex justify-between text-slate-400"><span>স্পিড/ডেলিভারি:</span> <span id="modalSpeed" class="text-emerald-400">0</span></div>
+        <p id="modalDesc" class="text-[11px] text-slate-400 pt-1 border-t border-slate-800 mt-1"></p>
+      </div>
 
-</div>
+      <form id="orderForm" onsubmit="submitOrder(event)" class="space-y-3">
+        <div>
+          <label class="block text-xs text-slate-300 font-semibold mb-1">টার্গেট লিংক (Page / Profile / Video Link)</label>
+          <input type="url" id="orderLink" required placeholder="https://..." class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-cyan-400">
+        </div>
+        <div>
+          <label class="block text-xs text-slate-300 font-semibold mb-1">পরিমাণ (Quantity)</label>
+          <input type="number" id="orderQty" required oninput="calculateTotal()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-cyan-400" placeholder="উদাঃ 1000">
+        </div>
 
-<div class="card info-grid">
+        <div class="bg-slate-900 p-3 rounded-xl flex items-center justify-between border border-slate-700">
+          <div>
+            <span class="text-xs text-slate-400 block">মোট মূল্য:</span>
+            <span id="orderTotalPrice" class="text-lg font-black text-cyan-400">৳0.00 TAKA</span>
+          </div>
+          <div class="text-right">
+            <span class="text-xs text-slate-400 block">আপনার বর্তমান ব্যালেন্স:</span>
+            <span id="modalCurrentBalance" class="text-sm font-bold text-emerald-400">৳0.00</span>
+          </div>
+        </div>
 
-<div class="info-box">
-<h3>Minimum Order</h3>
-<p>1000</p>
-</div>
+        <button type="submit" id="btnPlaceOrder" class="w-full py-3 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-black rounded-xl text-sm shadow-lg shadow-cyan-500/20 active:scale-95 transition-all">
+          কনফার্ম অর্ডার করুন
+        </button>
+      </form>
+    </div>
+  </div>
 
-<div class="info-box">
-<h3>Rate / 1000</h3>
-<p id="rate">$5</p>
-</div>
+  <!-- AUTH MODAL (Login & Register) -->
+  <div id="authModal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-slate-800 border border-slate-700 w-full max-w-sm rounded-2xl p-5 shadow-2xl">
+      <div class="flex justify-between items-center mb-4">
+        <h3 id="authModalTitle" class="font-bold text-lg text-white">লগইন করুন</h3>
+        <button onclick="closeAuthModal()" class="text-slate-400 text-lg hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+      </div>
 
-</div>
+      <!-- Toggle Tabs -->
+      <div class="grid grid-cols-2 gap-1 bg-slate-900 p-1 rounded-xl mb-4 text-xs font-semibold text-center">
+        <button id="tabLogin" onclick="switchAuthMode('login')" class="py-1.5 rounded-lg bg-cyan-500 text-slate-950">লগইন</button>
+        <button id="tabRegister" onclick="switchAuthMode('register')" class="py-1.5 rounded-lg text-slate-400">রেজিস্ট্রেশন</button>
+      </div>
 
-<div class="card">
+      <form id="authForm" onsubmit="handleAuthSubmit(event)" class="space-y-3">
+        <div id="registerNameGroup" class="hidden">
+          <label class="block text-xs text-slate-300 font-semibold mb-1">আপনার পূর্ণ নাম</label>
+          <input type="text" id="authName" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-cyan-400" placeholder="Md Rahim">
+        </div>
 
-<label>Quantity</label>
-<input type="number" id="qty" value="1000">
+        <div>
+          <label class="block text-xs text-slate-300 font-semibold mb-1">জিমেইল অথবা ১১ ডিজিটের ফোন নম্বর</label>
+          <input type="text" id="authIdentifier" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-cyan-400" placeholder="017XXXXXXXX বা user@gmail.com">
+        </div>
 
-<br><br>
+        <div>
+          <label class="block text-xs text-slate-300 font-semibold mb-1">পাসওয়ার্ড (মিনিমাম ৮ ডিজিট)</label>
+          <input type="password" id="authPassword" required minlength="8" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-cyan-400" placeholder="••••••••">
+        </div>
 
-<label>Profile / Post Link</label>
-<input type="text" id="link" placeholder="https://example.com">
+        <p id="authError" class="text-red-400 text-xs hidden"></p>
 
-</div>
+        <button type="submit" id="authSubmitBtn" class="w-full py-2.5 bg-cyan-500 text-slate-950 font-bold rounded-xl text-sm mt-2 shadow-lg shadow-cyan-500/20">
+          লগইন করুন
+        </button>
+      </form>
+    </div>
+  </div>
 
-<div class="card total-card">
-<h2>Total Price</h2>
-<div class="total-price" id="total">$5.00</div>
-</div>
+  <!-- SCRIPT LOGIC -->
+  <script>
+    const WORKER_URL = "https://worker.followervai.shop";
+    let allServices = [];
+    let selectedService = null;
+    let currentUser = JSON.parse(localStorage.getItem("fv_user")) || null;
+    let authMode = "login";
 
-<div class="warning" id="warning">
-<h3>⚠ Insufficient Balance</h3>
-<p>Your account balance is too low. Please add funds before placing an order.</p>
-</div>
+    // Initialize UI
+    window.addEventListener("DOMContentLoaded", () => {
+      checkUserSession();
+      loadServices();
+    });
 
-<div class="card">
+    function checkUserSession() {
+      const topSec = document.getElementById("topUserSection");
+      if (currentUser) {
+        // Fetch fresh balance
+        fetch(`${WORKER_URL}/api/user-profile?id=${currentUser.id}`)
+          .then(res => res.json())
+          .then(data => {
+            if (data.user) {
+              currentUser = data.user;
+              localStorage.setItem("fv_user", JSON.stringify(currentUser));
+              renderHeaderUser();
+            }
+          }).catch(() => renderHeaderUser());
+      } else {
+        renderHeaderUser();
+      }
+    }
 
-<div class="summary-item">
-<span>Platform</span>
-<span id="sumPlatform">Facebook</span>
-</div>
+    function renderHeaderUser() {
+      const topSec = document.getElementById("topUserSection");
+      if (currentUser) {
+        topSec.innerHTML = `
+          <div class="flex items-center gap-2">
+            <a href="payment.html" class="bg-slate-900/90 border border-cyan-500/40 px-3 py-1 rounded-xl flex items-center gap-1.5 shadow-inner">
+              <i class="fa-solid fa-wallet text-cyan-400 text-xs"></i>
+              <span class="text-xs font-extrabold text-white">৳${Number(currentUser.balance).toFixed(2)}</span>
+            </a>
+            <button onclick="logout()" title="লগআউট" class="w-8 h-8 rounded-xl bg-slate-800 border border-slate-700 text-slate-400 hover:text-red-400 flex items-center justify-center text-xs">
+              <i class="fa-solid fa-arrow-right-from-bracket"></i>
+            </button>
+          </div>
+        `;
+      } else {
+        topSec.innerHTML = `
+          <button onclick="openAuthModal('login')" class="bg-cyan-500 hover:bg-cyan-400 text-slate-950 px-3 py-1.5 rounded-xl font-bold text-xs shadow-md transition-all">
+            লগইন / সাইনআপ
+          </button>
+        `;
+      }
+    }
 
-<div class="summary-item">
-<span>Service</span>
-<span id="sumService">Followers</span>
-</div>
+    // Load Services from JSON
+    async function loadServices() {
+      try {
+        const res = await fetch("services.json");
+        allServices = await res.json();
+        renderServices(allServices);
+      } catch (err) {
+        document.getElementById("servicesContainer").innerHTML = `
+          <div class="text-center py-6 text-red-400 text-xs">
+            সার্ভিস লিস্ট লোড করা সম্ভব হয়নি। 'services.json' ফাইল নিশ্চিত করুন।
+          </div>
+        `;
+      }
+    }
 
-<div class="summary-item">
-<span>Quantity</span>
-<span id="sumQty">1000</span>
-</div>
+    // Render Service Cards
+    function renderServices(services) {
+      const container = document.getElementById("servicesContainer");
+      if (!services.length) {
+        container.innerHTML = `<div class="text-center py-10 text-slate-500 text-xs">কোনো সার্ভিস পাওয়া যায়নি।</div>`;
+        return;
+      }
 
-</div>
+      container.innerHTML = services.map(s => `
+        <div class="bg-slate-800 border border-slate-700/80 rounded-2xl p-4 flex flex-col justify-between hover:border-cyan-500/50 transition-all shadow-sm">
+          <div class="flex items-start gap-3">
+            <div class="w-10 h-10 rounded-xl bg-slate-900 border border-slate-700 flex items-center justify-center flex-shrink-0">
+              <i class="${s.icon || 'fa-solid fa-bolt'} text-cyan-400 text-lg"></i>
+            </div>
+            <div class="flex-1">
+              <div class="flex items-center gap-2">
+                <span class="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-md bg-slate-900 text-cyan-400 border border-slate-700">${s.category}</span>
+                <span class="text-[10px] text-slate-400"><i class="fa-regular fa-clock"></i> ${s.fill_time}</span>
+              </div>
+              <h4 class="font-bold text-sm text-white mt-1 leading-snug">${s.title}</h4>
+              <p class="text-[11px] text-slate-400 mt-1 line-clamp-2 leading-relaxed">${s.details}</p>
+            </div>
+          </div>
 
-<button onclick="submitOrder()">
-Place Order
-</button>
+          <div class="mt-3 pt-3 border-t border-slate-700/60 flex items-center justify-between">
+            <div>
+              <span class="text-[10px] text-slate-400 block">প্রতি ১,০০০ মূল্য</span>
+              <span class="text-base font-black text-white">৳${s.price_per_1k} <span class="text-[10px] font-normal text-cyan-400">TAKA</span></span>
+            </div>
+            <button onclick="handleBuyClick(${s.id})" class="px-4 py-2 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs rounded-xl shadow-md transition-all active:scale-95 flex items-center gap-1.5">
+              <i class="fa-solid fa-cart-shopping text-xs"></i> কিনুন
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
 
-<div class="success" id="success">
-✅ Order Submitted Successfully
-</div>
+    // Filter by Category
+    function filterCategory(cat) {
+      document.querySelectorAll(".cat-tab").forEach(btn => {
+        btn.classList.remove("bg-cyan-500", "text-slate-950");
+        btn.classList.add("bg-slate-800", "text-slate-300");
+      });
+      event.currentTarget.classList.remove("bg-slate-800", "text-slate-300");
+      event.currentTarget.classList.add("bg-cyan-500", "text-slate-950");
 
-</div>
+      if (cat === "all") {
+        renderServices(allServices);
+      } else {
+        const filtered = allServices.filter(s => s.category.toLowerCase() === cat.toLowerCase());
+        renderServices(filtered);
+      }
+    }
 
-<script>
+    // Buy Action
+    function handleBuyClick(id) {
+      if (!currentUser) {
+        openAuthModal("login");
+        return;
+      }
 
-let balance=20;
+      selectedService = allServices.find(s => s.id === id);
+      if (!selectedService) return;
 
-const qty=document.getElementById('qty');
-const service=document.getElementById('service');
-const country=document.getElementById('country');
+      document.getElementById("modalTitle").innerText = selectedService.title;
+      document.getElementById("modalServiceIcon").className = selectedService.icon || "fa-solid fa-bolt";
+      document.getElementById("modalRate").innerText = `৳${selectedService.price_per_1k} TAKA`;
+      document.getElementById("modalMinMax").innerText = `${selectedService.min_qty} - ${selectedService.max_qty}`;
+      document.getElementById("modalSpeed").innerText = selectedService.fill_time;
+      document.getElementById("modalDesc").innerText = selectedService.details;
+      document.getElementById("modalCurrentBalance").innerText = `৳${Number(currentUser.balance).toFixed(2)}`;
+      
+      const qtyInput = document.getElementById("orderQty");
+      qtyInput.value = selectedService.min_qty;
+      qtyInput.min = selectedService.min_qty;
+      qtyInput.max = selectedService.max_qty;
 
-function calculate(){
+      calculateTotal();
+      document.getElementById("orderModal").classList.remove("hidden");
+    }
 
-let rate=
-parseFloat(service.value)
-*
-parseFloat(country.value);
+    function closeOrderModal() {
+      document.getElementById("orderModal").classList.add("hidden");
+    }
 
-document.getElementById('rate').innerHTML=
-'$'+rate.toFixed(2);
+    function calculateTotal() {
+      if (!selectedService) return;
+      const qty = Number(document.getElementById("orderQty").value) || 0;
+      const total = (qty * selectedService.price_per_1k) / 1000;
+      document.getElementById("orderTotalPrice").innerText = `৳${total.toFixed(2)} TAKA`;
+    }
 
-let total=
-(rate/1000)
-*
-parseInt(qty.value||0);
+    // Submit Order
+    async function submitOrder(e) {
+      e.preventDefault();
+      const qty = Number(document.getElementById("orderQty").value);
+      const link = document.getElementById("orderLink").value.trim();
+      const total = (qty * selectedService.price_per_1k) / 1000;
 
-document.getElementById('total').innerHTML=
-'$'+total.toFixed(2);
+      if (qty < selectedService.min_qty || qty > selectedService.max_qty) {
+        alert(`পরিমাণ অবশ্যই ${selectedService.min_qty} থেকে ${selectedService.max_qty}-এর মধ্যে হতে হবে!`);
+        return;
+      }
 
-document.getElementById('sumPlatform').innerText=
-document.getElementById('platform').value;
+      if (currentUser.balance < total) {
+        alert("আপনার ব্যালেন্স পর্যাপ্ত নয়! দয়া করে Add Fund থেকে টাকা যোগ করুন।");
+        window.location.href = "payment.html";
+        return;
+      }
 
-document.getElementById('sumService').innerText=
-service.options[service.selectedIndex].text;
+      const btn = document.getElementById("btnPlaceOrder");
+      btn.disabled = true;
+      btn.innerText = "অর্ডার প্রসেস হচ্ছে...";
 
-document.getElementById('sumQty').innerText=
-qty.value;
+      try {
+        const res = await fetch(`${WORKER_URL}/api/orders/create`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            userId: currentUser.id,
+            serviceId: selectedService.id,
+            serviceTitle: selectedService.title,
+            category: selectedService.category,
+            targetLink: link,
+            quantity: qty,
+            totalPrice: total
+          })
+        });
 
-if(total>balance){
+        const data = await res.json();
+        if (data.success) {
+          currentUser.balance = data.newBalance;
+          localStorage.setItem("fv_user", JSON.stringify(currentUser));
+          renderHeaderUser();
+          closeOrderModal();
+          alert("🎉 অর্ডার সফল হয়েছে! প্রসেসিং চলছে।");
+          window.location.href = "orders.html";
+        } else {
+          alert(data.error || "অর্ডার সম্পন্ন হতে পারেনি।");
+        }
+      } catch (err) {
+        alert("নেটওয়ার্ক সমস্যা! পুনরায় চেষ্টা করুন।");
+      } finally {
+        btn.disabled = false;
+        btn.innerText = "কনফার্ম অর্ডার করুন";
+      }
+    }
 
-document.getElementById('warning').style.display='block';
+    // Auth Modal Handlers
+    function openAuthModal(mode = 'login') {
+      authMode = mode;
+      switchAuthMode(mode);
+      document.getElementById("authModal").classList.remove("hidden");
+    }
 
-}else{
+    function closeAuthModal() {
+      document.getElementById("authModal").classList.add("hidden");
+    }
 
-document.getElementById('warning').style.display='none';
+    function switchAuthMode(mode) {
+      authMode = mode;
+      const title = document.getElementById("authModalTitle");
+      const nameGroup = document.getElementById("registerNameGroup");
+      const submitBtn = document.getElementById("authSubmitBtn");
+      const tabLogin = document.getElementById("tabLogin");
+      const tabRegister = document.getElementById("tabRegister");
 
-}
+      if (mode === "register") {
+        title.innerText = "নতুন অ্যাকাউন্ট তৈরি করুন";
+        nameGroup.classList.remove("hidden");
+        submitBtn.innerText = "রেজিস্ট্রেশন করুন";
+        tabRegister.className = "py-1.5 rounded-lg bg-cyan-500 text-slate-950 font-bold";
+        tabLogin.className = "py-1.5 rounded-lg text-slate-400";
+      } else {
+        title.innerText = "লগইন করুন";
+        nameGroup.classList.add("hidden");
+        submitBtn.innerText = "লগইন করুন";
+        tabLogin.className = "py-1.5 rounded-lg bg-cyan-500 text-slate-950 font-bold";
+        tabRegister.className = "py-1.5 rounded-lg text-slate-400";
+      }
+    }
 
-}
+    async function handleAuthSubmit(e) {
+      e.preventDefault();
+      const identifier = document.getElementById("authIdentifier").value.trim();
+      const password = document.getElementById("authPassword").value.trim();
+      const name = document.getElementById("authName").value.trim();
+      const errBox = document.getElementById("authError");
+      errBox.classList.add("hidden");
 
-service.addEventListener('change',calculate);
-country.addEventListener('change',calculate);
-qty.addEventListener('input',calculate);
+      const endpoint = authMode === "register" ? "/api/register" : "/api/login";
+      const payload = authMode === "register" ? { name, identifier, password } : { identifier, password };
 
-calculate();
+      try {
+        const res = await fetch(`${WORKER_URL}${endpoint}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
 
-function submitOrder(){
+        if (data.success) {
+          if (authMode === "register") {
+            alert(data.message);
+            switchAuthMode("login");
+          } else {
+            currentUser = data.user;
+            localStorage.setItem("fv_user", JSON.stringify(currentUser));
+            closeAuthModal();
+            renderHeaderUser();
+          }
+        } else {
+          errBox.innerText = data.error;
+          errBox.classList.remove("hidden");
+        }
+      } catch (err) {
+        errBox.innerText = "সার্ভার এরর! পুনরায় চেষ্টা করুন।";
+        errBox.classList.remove("hidden");
+      }
+    }
 
-let total=parseFloat(
-document.getElementById('total')
-.innerText.replace('$','')
-);
-
-if(total>balance){
-
-alert('Insufficient Balance');
-
-return;
-
-}
-
-document.getElementById('success').style.display='block';
-
-setTimeout(()=>{
-document.getElementById('success').style.display='none';
-},3000);
-
-}
-
-</script>
-
+    function logout() {
+      if (confirm("আপনি কি নিশ্চিত লগআউট করতে চান?")) {
+        localStorage.removeItem("fv_user");
+        currentUser = null;
+        renderHeaderUser();
+        window.location.reload();
+      }
+    }
+  </script>
 </body>
 </html>
