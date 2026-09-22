@@ -232,6 +232,7 @@
       }
     }
 
+    // ৩. সার্ভিসেস কার্ড রেন্ডার (ডিটেলস ড্রপডাউন সহ)
     function renderServices(list) {
       const container = document.getElementById("services-grid");
       container.innerHTML = "";
@@ -241,28 +242,65 @@
       }
       list.forEach(s => {
         container.innerHTML += `
-          <div class="bg-white p-3.5 rounded-2xl border border-slate-100 shadow-xs flex items-center gap-3 transition-transform active:scale-[0.99]">
-            <img src="${s.image}" class="w-12 h-12 object-contain rounded-2xl p-1 bg-slate-50 border border-slate-100 flex-shrink-0" alt="">
-            <div class="flex-1 min-w-0">
-              <div class="flex items-center gap-1.5 mb-0.5">
-                <span class="text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded bg-indigo-50 text-indigo-700">${s.main_category}</span>
-                <span class="text-[9px] text-slate-400 font-semibold">${s.completion_time}</span>
+          <div class="bg-white rounded-2xl border border-slate-100 shadow-xs overflow-hidden transition-all">
+            <!-- কার্ডের মূল অংশ -->
+            <div class="p-3.5 flex items-center gap-3">
+              <img src="${s.image}" class="w-12 h-12 object-contain rounded-2xl p-1 bg-slate-50 border border-slate-100 flex-shrink-0" alt="">
+              
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center justify-between mb-0.5">
+                  <span class="text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded bg-indigo-50 text-indigo-700">${s.main_category}</span>
+                  
+                  <!-- ডিটেলস টগল বাটন -->
+                  <button type="button" onclick="toggleDetails(${s.id})" class="text-[10px] font-bold text-indigo-600 bg-indigo-50/70 hover:bg-indigo-100 px-2 py-0.5 rounded-lg flex items-center gap-1 transition-colors">
+                    ডিটেলস <i id="icon-det-${s.id}" class="fa-solid fa-chevron-down text-[9px] transition-transform duration-200"></i>
+                  </button>
+                </div>
+
+                <h4 class="text-xs font-extrabold text-slate-800 truncate">${s.title}</h4>
+                
+                <div class="flex items-baseline gap-2 mt-1">
+                  <span class="text-sm font-black text-indigo-600">৳${s.price_per_1k}</span>
+                  <span class="text-[11px] line-through text-slate-400">৳${s.regular_price}</span>
+                  <span class="text-[10px] text-slate-400">/ ১,০০০</span>
+                </div>
               </div>
-              <h4 class="text-xs font-extrabold text-slate-800 truncate">${s.title}</h4>
-              <div class="flex items-baseline gap-2 mt-1">
-                <span class="text-sm font-black text-indigo-600">৳${s.price_per_1k}</span>
-                <span class="text-[11px] line-through text-slate-400">৳${s.regular_price}</span>
-                <span class="text-[10px] text-slate-400">/ ১,০০০</span>
+
+              <!-- বাই নাও বাটন -->
+              <button onclick="handleBuyClick(${s.id})" class="px-3.5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-extrabold shadow-xs flex-shrink-0">
+                Buy Now
+              </button>
+            </div>
+
+            <!-- নিচে স্লাইড হয়ে খুলে যাওয়া ডিটেলস বক্স (ডিফল্টভাবে হিডেন থাকবে) -->
+            <div id="details-box-${s.id}" class="hidden bg-slate-50/80 border-t border-slate-100 p-3.5 text-xs text-slate-600 space-y-2">
+              <p class="leading-relaxed text-[11px] text-slate-700 font-medium">
+                <i class="fa-solid fa-circle-info text-indigo-500 mr-1"></i> ${s.description}
+              </p>
+              <div class="grid grid-cols-2 gap-2 text-[10px] bg-white p-2 rounded-xl border border-slate-100">
+                <div>কমপক্ষে: <b class="text-slate-800">${s.min_qty}</b> | সর্বোচ্চ: <b class="text-slate-800">${s.max_qty}</b></div>
+                <div class="text-right">ডেলিভারি টাইম: <b class="text-indigo-600">${s.completion_time}</b></div>
               </div>
             </div>
-            <button onclick="handleBuyClick(${s.id})" class="px-3.5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-extrabold shadow-xs flex-shrink-0">
-              কিনুন
-            </button>
           </div>
         `;
       });
     }
 
+    // ডিটেলস বক্স শো/হাইড করার ফাংশন
+    function toggleDetails(id) {
+      const box = document.getElementById(`details-box-${id}`);
+      const icon = document.getElementById(`icon-det-${id}`);
+      
+      if (box.classList.contains("hidden")) {
+        box.classList.remove("hidden");
+        icon.classList.add("rotate-180");
+      } else {
+        box.classList.add("hidden");
+        icon.classList.remove("rotate-180");
+      }
+    }
+    
     function filterCat(cat) {
       document.querySelectorAll(".cat-btn").forEach(b => {
         b.classList.remove("bg-indigo-600", "text-white");
