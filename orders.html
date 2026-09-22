@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>My Orders | Follower Vai Shop</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-slate-900 text-slate-100 pb-24">
+  <header class="sticky top-0 z-30 bg-slate-800 border-b border-slate-700 px-4 py-3 flex items-center justify-between max-w-md mx-auto">
+    <a href="index.html" class="text-slate-400 hover:text-white"><i class="fa-solid fa-arrow-left"></i></a>
+    <h2 class="font-bold text-base">আমার অর্ডার হিস্টোরি</h2>
+    <div class="w-5"></div>
+  </header>
+
+  <main class="max-w-md mx-auto px-4 pt-4">
+    <div id="ordersList" class="space-y-3">
+      <div class="text-center py-10 text-slate-500 text-xs">লোড হচ্ছে...</div>
+    </div>
+  </main>
+
+  <nav class="fixed bottom-0 left-0 right-0 z-40 bg-slate-800/95 backdrop-blur border-t border-slate-700 py-2">
+    <div class="max-w-md mx-auto grid grid-cols-4 text-center">
+      <a href="index.html" class="flex flex-col items-center text-slate-400"><i class="fa-solid fa-house text-lg"></i><span class="text-[11px] mt-1">Home</span></a>
+      <a href="orders.html" class="flex flex-col items-center text-cyan-400"><i class="fa-solid fa-list-check text-lg"></i><span class="text-[11px] mt-1">Orders</span></a>
+      <a href="payment.html" class="flex flex-col items-center text-slate-400"><i class="fa-solid fa-wallet text-lg"></i><span class="text-[11px] mt-1">Add Fund</span></a>
+      <a href="payment-history.html" class="flex flex-col items-center text-slate-400"><i class="fa-solid fa-clock-rotate-left text-lg"></i><span class="text-[11px] mt-1">History</span></a>
+    </div>
+  </nav>
+
+  <script>
+    const WORKER_URL = "https://worker.followervai.shop";
+    const user = JSON.parse(localStorage.getItem("fv_user"));
+    if (!user) window.location.href = "index.html";
+
+    fetch(`${WORKER_URL}/api/orders/user?userId=${user.id}`)
+      .then(r => r.json())
+      .then(data => {
+        const list = document.getElementById("ordersList");
+        if (!data.orders || !data.orders.length) {
+          list.innerHTML = `<div class="text-center py-12 text-slate-500 text-sm">আপনার কোনো অর্ডার পাওয়া যায়নি।</div>`;
+          return;
+        }
+
+        list.innerHTML = data.orders.map(o => {
+          let statusBadge = "bg-amber-500/20 text-amber-400 border-amber-500/30";
+          if (o.status === "Completed") statusBadge = "bg-emerald-500/20 text-emerald-400 border-emerald-500/30";
+          if (o.status === "Cancelled") statusBadge = "bg-red-500/20 text-red-400 border-red-500/30";
+
+          return `
+            <div class="bg-slate-800 border border-slate-700 p-4 rounded-2xl shadow-sm">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-[10px] text-slate-400 font-mono">ID: #${o.id}</span>
+                <span class="text-xs px-2.5 py-0.5 rounded-full border font-semibold ${statusBadge}">${o.status}</span>
+              </div>
+              <h4 class="font-bold text-sm text-white">${o.service_title}</h4>
+              <p class="text-xs text-cyan-400 truncate mt-1"><a href="${o.target_link}" target="_blank">${o.target_link}</a></p>
+              
+              <div class="mt-3 pt-2 border-t border-slate-700/60 flex justify-between text-xs text-slate-300">
+                <span>পরিমাণ: <b>${o.quantity}</b></span>
+                <span>খরচ: <b class="text-white">৳${Number(o.total_price).toFixed(2)}</b></span>
+              </div>
+            </div>
+          `;
+        }).join('');
+      });
+  </script>
+</body>
+</html>
