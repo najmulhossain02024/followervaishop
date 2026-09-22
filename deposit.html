@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Add Fund - Follower Vai Shop</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-slate-50 text-slate-800 pb-24 font-sans select-none">
+
+  <!-- হেডার -->
+  <header class="sticky top-0 z-40 bg-white border-b border-slate-200 px-4 py-3 shadow-xs">
+    <div class="max-w-md mx-auto flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <a href="index.html" class="w-8 h-8 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center text-xs"><i class="fa-solid fa-arrow-left"></i></a>
+        <h1 class="text-sm font-extrabold text-slate-900">অ্যাড ফান্ড (Add Fund)</h1>
+      </div>
+      <div class="bg-indigo-50 border border-indigo-200 px-3 py-1 rounded-full text-indigo-700 text-xs font-black">
+        ৳ <span id="deposit-user-bal">0.00</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-md mx-auto p-4 space-y-4">
+    <!-- মূল কার্ড (স্ক্রিনশটের হুবহু কপি) -->
+    <div class="bg-white p-5 rounded-3xl shadow-sm border border-slate-100 space-y-4">
+      <h2 class="text-xs font-extrabold text-slate-600 tracking-wider">SELECT PAYMENT METHOD</h2>
+
+      <!-- গেটওয়ে সিলেক্টর গ্রিড (আইকন ও নাম সহ) -->
+      <div class="grid grid-cols-2 gap-2.5" id="methods-grid">
+        <!-- ডায়নামিক পেমেন্ট মেথড আসবে -->
+      </div>
+
+      <!-- বিস্তারিত দিক-নির্দেশনা ও নম্বর বক্স (স্ক্রিনশট ১ ও ২ অনুযায়ী) -->
+      <div class="bg-[#fff4f8] border border-[#ffd2e2] rounded-3xl p-4.5 space-y-3">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-extrabold text-[#c81e5b]" id="view-method-title">bKash Personal Number:</span>
+          <div class="flex items-center gap-2">
+            <span class="font-extrabold text-slate-900 text-xs tracking-wider" id="view-method-number">01871082208</span>
+            <button type="button" onclick="copyPaymentNumber()" class="bg-[#ffdbe7] hover:bg-[#ffccd8] text-[#b3144d] text-[11px] font-bold px-2.5 py-1 rounded-lg flex items-center gap-1 shadow-2xs">
+              <i class="fa-regular fa-copy"></i> Copy
+            </button>
+          </div>
+        </div>
+
+        <div class="text-[11px] text-slate-600 whitespace-pre-line leading-relaxed font-medium" id="view-method-instructions">
+          লোড হচ্ছে...
+        </div>
+      </div>
+
+      <!-- ইনপুট ফর্ম -->
+      <form onsubmit="handleFundSubmit(event)" class="space-y-3.5 pt-1">
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Enter Amount<span class="text-red-500">*</span></label>
+            <input type="number" id="f-amount" placeholder="e: 20 BDT" required class="w-full text-xs p-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-indigo-600">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Your Number<span class="text-red-500">*</span></label>
+            <input type="text" id="f-sender" placeholder="017XXXXXXXX" required class="w-full text-xs p-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-indigo-600">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Transaction ID (TrxID)<span class="text-red-500">*</span></label>
+          <input type="text" id="f-trxid" placeholder="E.G. BAX892K3LM" required class="w-full text-xs p-3 uppercase bg-slate-50 border border-slate-200 rounded-xl focus:outline-indigo-600 font-mono tracking-wider">
+        </div>
+
+        <label class="flex items-center gap-2 cursor-pointer pt-1">
+          <input type="checkbox" id="f-check" required class="rounded text-indigo-600 focus:ring-0 w-4 h-4">
+          <span class="text-xs text-slate-600 font-medium">I have completed payment.</span>
+        </label>
+
+        <!-- পার্পল সাবমিট বাটন -->
+        <button type="submit" id="btn-add-fund" class="w-full py-3.5 bg-[#4c42e8] hover:bg-[#3f35dc] text-white font-bold text-xs rounded-xl shadow-md flex items-center justify-center gap-2 transition-all">
+          Add Fund <i class="fa-regular fa-circle-check text-sm"></i>
+        </button>
+      </form>
+    </div>
+  </main>
+
+  <!-- সাকসেস পপআপ স্ক্রিন (স্ক্রিনশট ৩ ও ৪ অনুযায়ী অবিকল তৈরি) -->
+  <div id="modal-fund-success" class="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white w-full max-w-xs rounded-3xl p-6 text-center space-y-4 shadow-2xl">
+      <!-- গ্রিন টিক সার্কেল -->
+      <div class="w-16 h-16 rounded-full bg-[#d2f8e5] text-[#10b981] mx-auto flex items-center justify-center text-3xl font-black">
+        <i class="fa-solid fa-check"></i>
+      </div>
+      <div>
+        <p class="text-[11px] font-extrabold text-[#059669] tracking-wider">FUND RECEIVED</p>
+        <h3 class="text-xl font-black text-slate-900 flex items-center justify-center gap-1.5 mt-0.5">Thank You! 🎉</h3>
+        <p class="text-[11px] text-slate-400 mt-1 leading-snug">Your payment is under verification. Funds will be added within 1–10 minutes.</p>
+      </div>
+
+      <!-- রিসিট কার্ড -->
+      <div class="bg-slate-50 border border-slate-100 rounded-2xl p-4 text-xs space-y-2 text-left">
+        <div class="flex justify-between">
+          <span class="text-slate-400">Fund ID:</span>
+          <span class="font-bold text-indigo-700" id="res-fund-id">#fund-303992</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-slate-400">TrxID:</span>
+          <span class="font-extrabold text-amber-700 font-mono" id="res-trx-id">BKASH - FGDFGDFSFG</span>
+        </div>
+        <div class="flex justify-between border-t border-slate-200/60 pt-2 items-center">
+          <span class="text-slate-600 font-bold">Total Amount:</span>
+          <span class="font-black text-emerald-600 text-base">৳ <span id="res-amount">88</span></span>
+        </div>
+      </div>
+
+      <!-- অ্যাকশন বাটনসমূহ -->
+      <div class="space-y-2 pt-1">
+        <a id="btn-telegram-receipt" target="_blank" href="https://t.me/yourtelegramusername" class="w-full py-3 bg-[#00a2ed] hover:bg-[#0092d6] text-white font-bold text-xs rounded-xl flex items-center justify-center gap-2 shadow-xs transition-colors">
+          <i class="fa-brands fa-telegram text-sm"></i> Send Receipt via Telegram
+        </a>
+        <button type="button" onclick="closeSuccessModal()" class="w-full py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl transition-colors">
+          Back to Homepage
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ডুপ্লিকেট TrxID ওয়ার্নিং পপআপ -->
+  <div id="modal-dup-trx" class="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white w-full max-w-xs rounded-3xl p-5 text-center space-y-3 shadow-2xl border border-red-100">
+      <div class="w-14 h-14 rounded-full bg-red-100 text-red-500 mx-auto flex items-center justify-center text-2xl">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+      </div>
+      <h4 class="text-sm font-extrabold text-slate-800">ভুল বা ব্যবহৃত TrxID!</h4>
+      <p class="text-xs text-slate-500 leading-relaxed">এই Transaction ID (TrxID) টি পূর্বে ব্যবহার করা হয়েছে! অনুগ্রহ করে সঠিক ট্রানজেকশন আইডি দিন।</p>
+      <button onclick="document.getElementById('modal-dup-trx').classList.add('hidden')" class="w-full py-2.5 bg-red-600 text-white font-bold text-xs rounded-xl">ঠিক আছে</button>
+    </div>
+  </div>
+
+  <!-- বটম নেভ -->
+  <nav class="fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-slate-200 py-2.5">
+    <div class="max-w-md mx-auto grid grid-cols-4 text-center text-[11px]">
+      <a href="index.html" class="text-slate-400 flex flex-col items-center gap-1 font-semibold">
+        <i class="fa-solid fa-house text-base"></i> সার্ভিস
+      </a>
+      <a href="deposit.html" class="text-indigo-600 flex flex-col items-center gap-1 font-bold">
+        <i class="fa-solid fa-wallet text-base"></i> অ্যাড ফান্ড
+      </a>
+      <a href="orders.html" class="text-slate-400 flex flex-col items-center gap-1 font-semibold">
+        <i class="fa-solid fa-box-archive text-base"></i> অর্ডার ট্র্যাক
+      </a>
+      <a href="history.html" class="text-slate-400 flex flex-col items-center gap-1 font-semibold">
+        <i class="fa-solid fa-clock-rotate-left text-base"></i> হিস্ট্রি
+      </a>
+    </div>
+  </nav>
+
+  <script>
+    const WORKER_URL = "https://worker.followervai.shop";
+    let currentUser = JSON.parse(localStorage.getItem("fv_user")) || null;
+    let paymentMethods = [];
+    let activeMethod = null;
+
+    window.onload = async () => {
+      if (!currentUser) {
+        alert("দয়া করে প্রথমে একাউন্টে লগইন করুন!");
+        window.location.href = "index.html";
+        return;
+      }
+      document.getElementById("deposit-user-bal").innerText = parseFloat(currentUser.balance || 0).toFixed(2);
+      await loadGateways();
+    };
+
+    async function loadGateways() {
+      try {
+        const res = await fetch(`${WORKER_URL}/api/payment-methods`);
+        const data = await res.json();
+        paymentMethods = data.methods;
+        renderGateways();
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    function renderGateways() {
+      const grid = document.getElementById("methods-grid");
+      grid.innerHTML = "";
+      paymentMethods.forEach((m, idx) => {
+        const isDefault = idx === 0;
+        if (isDefault) activeMethod = m;
+
+        grid.innerHTML += `
+          <button type="button" onclick="selectMethod(${m.id})" id="btn-gw-${m.id}" 
+            class="gw-card p-3 rounded-2xl border text-left flex items-center justify-between transition-all ${isDefault ? 'border-[#e0246a] bg-pink-50/30' : 'border-slate-200 bg-white'}">
+            <div class="flex items-center gap-2">
+              <img src="${m.logo_url}" class="w-7 h-7 object-contain rounded-md" onerror="this.src='https://img.icons8.com/color/48/banknotes.png'">
+              <div>
+                <span class="block text-xs font-bold text-slate-800">${m.name}</span>
+                <span class="text-[10px] text-[#e0246a] font-semibold">${m.type}</span>
+              </div>
+            </div>
+          </button>
+        `;
+      });
+      updateMethodView();
+    }
+
+    function selectMethod(id) {
+      activeMethod = paymentMethods.find(m => m.id === id);
+      document.querySelectorAll(".gw-card").forEach(b => {
+        b.classList.remove("border-[#e0246a]", "bg-pink-50/30");
+        b.classList.add("border-slate-200", "bg-white");
+      });
+      const el = document.getElementById(`btn-gw-${id}`);
+      el.classList.add("border-[#e0246a]", "bg-pink-50/30");
+      el.classList.remove("border-slate-200", "bg-white");
+      updateMethodView();
+    }
+
+    function updateMethodView() {
+      if (!activeMethod) return;
+      document.getElementById("view-method-title").innerText = `${activeMethod.name}:`;
+      document.getElementById("view-method-number").innerText = activeMethod.number;
+      document.getElementById("view-method-instructions").innerText = activeMethod.instructions;
+    }
+
+    function copyPaymentNumber() {
+      navigator.clipboard.writeText(activeMethod.number);
+      alert(`নম্বর কপি হয়েছে: ${activeMethod.number}`);
+    }
+
+    async function handleFundSubmit(e) {
+      e.preventDefault();
+      const amount = parseFloat(document.getElementById("f-amount").value);
+      const sender = document.getElementById("f-sender").value.trim();
+      const trxid = document.getElementById("f-trxid").value.trim();
+
+      const btn = document.getElementById("btn-add-fund");
+      btn.disabled = true;
+      btn.innerText = "যাচাই করা হচ্ছে...";
+
+      try {
+        const res = await fetch(`${WORKER_URL}/api/funds/deposit`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            user_identifier: currentUser.identifier,
+            method: activeMethod.name,
+            amount,
+            sender_number: sender,
+            trx_id: trxid
+          })
+        });
+
+        const data = await res.json();
+        if (data.success) {
+          document.getElementById("res-fund-id").innerText = data.fund_code;
+          document.getElementById("res-trx-id").innerText = `${data.method.toUpperCase()} - ${data.trx_id}`;
+          document.getElementById("res-amount").innerText = data.amount;
+          document.getElementById("modal-fund-success").classList.remove("hidden");
+          e.target.reset();
+        } else if (data.isDuplicateTrx) {
+          document.getElementById("modal-dup-trx").classList.remove("hidden");
+        } else {
+          alert(data.message || "ত্রুটি হয়েছে!");
+        }
+      } catch (err) {
+        alert("সার্ভার সমস্যা!");
+      } finally {
+        btn.disabled = false;
+        btn.innerText = "Add Fund";
+      }
+    }
+
+    function closeSuccessModal() {
+      document.getElementById("modal-fund-success").classList.add("hidden");
+      window.location.href = "history.html";
+    }
+  </script>
+</body>
+</html>
