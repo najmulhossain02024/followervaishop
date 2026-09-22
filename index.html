@@ -43,15 +43,30 @@
       <i class="fa-solid fa-bolt text-3xl text-amber-300 opacity-90 mr-2"></i>
     </div>
 
-    <!-- ক্যাটাগরি আইকন ফিল্টার -->
+   <!-- ক্যাটাগরি আইকন ফিল্টার (স্লাইডার ও স্ক্রল সহ) -->
     <div>
-      <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">ক্যাটাগরি নির্বাচন করুন</h3>
-      <div class="flex items-center gap-2 overflow-x-auto hide-scrollbar pb-1" id="cat-tabs">
-        <button onclick="filterCat('All')" class="cat-btn active px-4 py-2 rounded-xl bg-indigo-600 text-white text-xs font-bold whitespace-nowrap shadow-xs">সবগুলো</button>
-        <button onclick="filterCat('Facebook')" class="cat-btn px-4 py-2 rounded-xl bg-white border border-slate-200 text-xs font-bold whitespace-nowrap flex items-center gap-1.5"><i class="fa-brands fa-facebook text-blue-600"></i> Facebook</button>
-        <button onclick="filterCat('Instagram')" class="cat-btn px-4 py-2 rounded-xl bg-white border border-slate-200 text-xs font-bold whitespace-nowrap flex items-center gap-1.5"><i class="fa-brands fa-instagram text-pink-600"></i> Instagram</button>
-        <button onclick="filterCat('TikTok')" class="cat-btn px-4 py-2 rounded-xl bg-white border border-slate-200 text-xs font-bold whitespace-nowrap flex items-center gap-1.5"><i class="fa-brands fa-tiktok text-black"></i> TikTok</button>
-        <button onclick="filterCat('YouTube')" class="cat-btn px-4 py-2 rounded-xl bg-white border border-slate-200 text-xs font-bold whitespace-nowrap flex items-center gap-1.5"><i class="fa-brands fa-youtube text-red-600"></i> YouTube</button>
+      <div class="flex items-center justify-between mb-2">
+        <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider">ক্যাটাগরি নির্বাচন করুন</h3>
+        <!-- ডানে ও বামে স্লাইড করার ছোট বাটন -->
+        <div class="flex items-center gap-1.5">
+          <button type="button" onclick="slideCategories(-120)" class="w-6 h-6 rounded-full bg-slate-200/80 hover:bg-indigo-100 text-slate-600 hover:text-indigo-600 flex items-center justify-center text-[10px] transition-colors">
+            <i class="fa-solid fa-chevron-left"></i>
+          </button>
+          <button type="button" onclick="slideCategories(120)" class="w-6 h-6 rounded-full bg-slate-200/80 hover:bg-indigo-100 text-slate-600 hover:text-indigo-600 flex items-center justify-center text-[10px] transition-colors">
+            <i class="fa-solid fa-chevron-right"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- হাত দিয়ে ডানে-বামে স্মুথ সোয়াইপ করার কনটেইনার -->
+      <div class="flex items-center gap-2 overflow-x-auto hide-scrollbar pb-1.5 scroll-smooth touch-pan-x" id="cat-tabs">
+        <button onclick="filterCat('All')" class="cat-btn active px-3.5 py-1.5 rounded-xl bg-indigo-600 text-white text-xs font-bold whitespace-nowrap shadow-xs">সবগুলো</button>
+        <button onclick="filterCat('Facebook')" class="cat-btn px-3 py-1.5 rounded-xl bg-white border border-slate-200 text-xs font-bold whitespace-nowrap flex items-center gap-1.5 text-slate-700"><i class="fa-brands fa-facebook text-blue-600 text-sm"></i> Facebook</button>
+        <button onclick="filterCat('Instagram')" class="cat-btn px-3 py-1.5 rounded-xl bg-white border border-slate-200 text-xs font-bold whitespace-nowrap flex items-center gap-1.5 text-slate-700"><i class="fa-brands fa-instagram text-pink-600 text-sm"></i> Instagram</button>
+        <button onclick="filterCat('TikTok')" class="cat-btn px-3 py-1.5 rounded-xl bg-white border border-slate-200 text-xs font-bold whitespace-nowrap flex items-center gap-1.5 text-slate-700"><i class="fa-brands fa-tiktok text-black text-sm"></i> TikTok</button>
+        <button onclick="filterCat('YouTube')" class="cat-btn px-3 py-1.5 rounded-xl bg-white border border-slate-200 text-xs font-bold whitespace-nowrap flex items-center gap-1.5 text-slate-700"><i class="fa-brands fa-youtube text-red-600 text-sm"></i> YouTube</button>
+        <button onclick="filterCat('Telegram')" class="cat-btn px-3 py-1.5 rounded-xl bg-white border border-slate-200 text-xs font-bold whitespace-nowrap flex items-center gap-1.5 text-slate-700"><i class="fa-brands fa-telegram text-sky-500 text-sm"></i> Telegram</button>
+        <button onclick="filterCat('WhatsApp')" class="cat-btn px-3 py-1.5 rounded-xl bg-white border border-slate-200 text-xs font-bold whitespace-nowrap flex items-center gap-1.5 text-slate-700"><i class="fa-brands fa-whatsapp text-emerald-500 text-sm"></i> WhatsApp</button>
       </div>
     </div>
 
@@ -312,7 +327,13 @@
       if (cat === 'All') renderServices(allServices);
       else renderServices(allServices.filter(x => x.main_category.toLowerCase() === cat.toLowerCase()));
     }
-
+// ক্যাটাগরি বাটন ডানে-বামে স্লাইড করার ফাংশন
+    function slideCategories(amount) {
+      const container = document.getElementById("cat-tabs");
+      if (container) {
+        container.scrollBy({ left: amount, behavior: "smooth" });
+      }
+    }
     function searchServices() {
       const q = document.getElementById("search-input").value.toLowerCase();
       renderServices(allServices.filter(s => s.title.toLowerCase().includes(q) || s.main_category.toLowerCase().includes(q)));
