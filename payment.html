@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Add Fund | Follower Vai Shop</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-slate-900 text-slate-100 pb-24">
+
+  <!-- Header -->
+  <header class="sticky top-0 z-30 bg-slate-800 border-b border-slate-700 px-4 py-3 flex items-center justify-between max-w-md mx-auto">
+    <div class="flex items-center gap-2">
+      <a href="index.html" class="text-slate-400 hover:text-white"><i class="fa-solid fa-arrow-left"></i></a>
+      <h2 class="font-bold text-base">ফান্ড অ্যাড করুন</h2>
+    </div>
+    <div class="text-xs bg-slate-900 border border-slate-700 px-2.5 py-1 rounded-lg">
+      ব্যালেন্স: <span id="userBal" class="text-cyan-400 font-bold">৳0.00</span>
+    </div>
+  </header>
+
+  <main class="max-w-md mx-auto px-4 pt-4 space-y-4">
+
+    <!-- Payment Methods Display -->
+    <div>
+      <h3 class="text-xs font-semibold text-slate-400 mb-2 uppercase tracking-wider">পেমেন্ট মেথড বেছে নিন</h3>
+      <div id="methodsList" class="space-y-2.5">
+        <!-- Injected via JS from DB -->
+        <div class="p-4 bg-slate-800 rounded-2xl border border-slate-700 text-center text-xs text-slate-400">
+          পেমেন্ট মেথড লোড হচ্ছে...
+        </div>
+      </div>
+    </div>
+
+    <!-- Deposit Form -->
+    <div class="bg-slate-800 border border-slate-700 p-4 rounded-2xl shadow-lg">
+      <h3 class="text-sm font-bold text-white mb-3 flex items-center gap-2">
+        <i class="fa-solid fa-file-invoice-dollar text-cyan-400"></i> পেমেন্ট ভেরিফিকেশন ফর্ম
+      </h3>
+
+      <form onsubmit="submitDeposit(event)" class="space-y-3">
+        <div>
+          <label class="block text-xs text-slate-300 mb-1">পেমেন্ট মেথড</label>
+          <select id="depMethod" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none">
+            <option value="bKash">bKash (বিকাশ)</option>
+            <option value="Nagad">Nagad (নগদ)</option>
+            <option value="Rocket">Rocket (রকেট)</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-xs text-slate-300 mb-1">টাকার পরিমাণ (TAKA)</label>
+          <input type="number" id="depAmount" min="10" required placeholder="উদাঃ 500" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-cyan-400">
+        </div>
+
+        <div>
+          <label class="block text-xs text-slate-300 mb-1">প্রেরক নম্বর (Sender Number)</label>
+          <input type="text" id="depSender" required placeholder="যে নম্বর থেকে টাকা পাঠিয়েছেন" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-cyan-400">
+        </div>
+
+        <div>
+          <label class="block text-xs text-slate-300 mb-1">ট্রানজেকশন আইডি (TrxID)</label>
+          <input type="text" id="depTrx" required placeholder="BK76H..." class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white uppercase focus:outline-none focus:border-cyan-400">
+        </div>
+
+        <button type="submit" id="btnDeposit" class="w-full py-3 bg-gradient-to-r from-emerald-500 to-teal-600 text-slate-950 font-bold rounded-xl text-sm shadow-lg active:scale-95 transition-all">
+          টাকা অ্যাড রিকোয়েস্ট পাঠান
+        </button>
+      </form>
+    </div>
+
+  </main>
+
+  <!-- Bottom Nav -->
+  <nav class="fixed bottom-0 left-0 right-0 z-40 bg-slate-800/95 backdrop-blur border-t border-slate-700 py-2">
+    <div class="max-w-md mx-auto grid grid-cols-4 text-center">
+      <a href="index.html" class="flex flex-col items-center text-slate-400"><i class="fa-solid fa-house text-lg"></i><span class="text-[11px] mt-1">Home</span></a>
+      <a href="orders.html" class="flex flex-col items-center text-slate-400"><i class="fa-solid fa-list-check text-lg"></i><span class="text-[11px] mt-1">Orders</span></a>
+      <a href="payment.html" class="flex flex-col items-center text-cyan-400"><i class="fa-solid fa-wallet text-lg"></i><span class="text-[11px] mt-1">Add Fund</span></a>
+      <a href="payment-history.html" class="flex flex-col items-center text-slate-400"><i class="fa-solid fa-clock-rotate-left text-lg"></i><span class="text-[11px] mt-1">History</span></a>
+    </div>
+  </nav>
+
+  <script>
+    const WORKER_URL = "https://worker.followervai.shop";
+    const user = JSON.parse(localStorage.getItem("fv_user"));
+
+    if (!user) {
+      alert("ফান্ড অ্যাড করার পূর্বে লগইন করুন!");
+      window.location.href = "index.html";
+    }
+
+    document.getElementById("userBal").innerText = `৳${Number(user.balance).toFixed(2)}`;
+
+    // Load dynamic payment numbers from worker
+    fetch(`${WORKER_URL}/api/payment-methods`)
+      .then(r => r.json())
+      .then(data => {
+        const list = document.getElementById("methodsList");
+        if (!data.methods || !data.methods.length) {
+          list.innerHTML = `<p class="text-xs text-slate-500">কোনো নম্বর পাওয়া যায়নি।</p>`;
+          return;
+        }
+        list.innerHTML = data.methods.map(m => `
+          <div class="bg-slate-800 border border-slate-700 p-3 rounded-2xl flex items-center justify-between">
+            <div>
+              <span class="text-xs font-bold text-cyan-400 uppercase">${m.method_name} (${m.type})</span>
+              <p class="text-base font-extrabold text-white tracking-wide mt-0.5">${m.wallet_number}</p>
+              <p class="text-[10px] text-slate-400">${m.instruction || ''}</p>
+            </div>
+            <button onclick="copyNum('${m.wallet_number}')" class="px-3 py-1.5 bg-slate-700 hover:bg-slate-600 text-xs font-bold rounded-xl text-slate-200">
+              কপি
+            </button>
+          </div>
+        `).join('');
+      });
+
+    function copyNum(num) {
+      navigator.clipboard.writeText(num);
+      alert("নম্বর কপি হয়েছে: " + num);
+    }
+
+    async function submitDeposit(e) {
+      e.preventDefault();
+      const method = document.getElementById("depMethod").value;
+      const amount = Number(document.getElementById("depAmount").value);
+      const senderNumber = document.getElementById("depSender").value.trim();
+      const trxId = document.getElementById("depTrx").value.trim();
+
+      const btn = document.getElementById("btnDeposit");
+      btn.disabled = true;
+      btn.innerText = "যাচাই করা হচ্ছে...";
+
+      try {
+        const res = await fetch(`${WORKER_URL}/api/deposits/submit`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            userId: user.id,
+            method,
+            senderNumber,
+            trxId,
+            amount
+          })
+        });
+        const data = await res.json();
+        if (data.success) {
+          alert(data.message);
+          window.location.href = "payment-history.html";
+        } else {
+          alert(data.error);
+        }
+      } catch(err) {
+        alert("নেটওয়ার্ক সমস্যা!");
+      } finally {
+        btn.disabled = false;
+        btn.innerText = "টাকা অ্যাড রিকোয়েস্ট পাঠান";
+      }
+    }
+  </script>
+</body>
+</html>
