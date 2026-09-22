@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Payment & Fund History - Follower Vai Shop</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-slate-50 text-slate-800 pb-24 font-sans select-none">
+
+  <!-- হেডার -->
+  <header class="sticky top-0 z-40 bg-white border-b border-slate-200 px-4 py-3 shadow-xs">
+    <div class="max-w-md mx-auto flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <a href="index.html" class="w-8 h-8 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center text-xs"><i class="fa-solid fa-arrow-left"></i></a>
+        <h1 class="text-sm font-extrabold text-slate-900">লেনদেন ও ফান্ড হিস্ট্রি</h1>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-md mx-auto p-4 space-y-4">
+    <!-- ডিপোজিট রিকোয়েস্ট হিস্ট্রি -->
+    <div>
+      <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">ফান্ড ডিপোজিট রিকোয়েস্ট</h3>
+      <div id="funds-history-list" class="space-y-2.5">
+        <p class="text-xs text-slate-400">লোড হচ্ছে...</p>
+      </div>
+    </div>
+
+    <!-- একাউন্ট লেজার ট্রানজেকশন -->
+    <div>
+      <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">লেজার হিস্ট্রি (খরচ ও যোগ)</h3>
+      <div id="tx-history-list" class="space-y-2.5">
+        <p class="text-xs text-slate-400">লোড হচ্ছে...</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- বটম নেভ -->
+  <nav class="fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-slate-200 py-2.5">
+    <div class="max-w-md mx-auto grid grid-cols-4 text-center text-[11px]">
+      <a href="index.html" class="text-slate-400 flex flex-col items-center gap-1 font-semibold"><i class="fa-solid fa-house text-base"></i> সার্ভিস</a>
+      <a href="deposit.html" class="text-slate-400 flex flex-col items-center gap-1 font-semibold"><i class="fa-solid fa-wallet text-base"></i> অ্যাড ফান্ড</a>
+      <a href="orders.html" class="text-slate-400 flex flex-col items-center gap-1 font-semibold"><i class="fa-solid fa-box-archive text-base"></i> অর্ডার ট্র্যাক</a>
+      <a href="history.html" class="text-indigo-600 flex flex-col items-center gap-1 font-bold"><i class="fa-solid fa-clock-rotate-left text-base"></i> হিস্ট্রি</a>
+    </div>
+  </nav>
+
+  <script>
+    const WORKER_URL = "https://worker.followervai.shop";
+    let currentUser = JSON.parse(localStorage.getItem("fv_user")) || null;
+
+    window.onload = async () => {
+      if (!currentUser) {
+        alert("দয়া করে লগইন করুন!");
+        window.location.href = "index.html";
+        return;
+      }
+      loadHistory();
+    };
+
+    async function loadHistory() {
+      try {
+        const res = await fetch(`${WORKER_URL}/api/user/transactions?identifier=${encodeURIComponent(currentUser.identifier)}`);
+        const data = await res.json();
+
+        // ফান্ড ডিপোজিট লিস্ট
+        const fBox = document.getElementById("funds-history-list");
+        fBox.innerHTML = "";
+        if (data.funds.length === 0) fBox.innerHTML = `<p class="text-xs text-slate-400">কোন ডিপোজিট রেকর্ড নেই।</p>`;
+        data.funds.forEach(f => {
+          let statusBadge = "bg-amber-50 text-amber-600";
+          if (f.status === 'approved') statusBadge = "bg-emerald-50 text-emerald-600";
+          if (f.status === 'rejected') statusBadge = "bg-red-50 text-red-600";
+
+          fBox.innerHTML += `
+            <div class="bg-white p-3 rounded-2xl border border-slate-100 flex justify-between items-center text-xs">
+              <div>
+                <p class="font-bold text-slate-800">${f.method} (${f.fund_code})</p>
+                <p class="text-[10px] text-slate-400 font-mono">TrxID: ${f.trx_id} | প্রেরক: ${f.sender_number}</p>
+              </div>
+              <div class="text-right">
+                <span class="block font-black text-emerald-600 text-sm">৳${f.amount}</span>
+                <span class="text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded ${statusBadge}">${f.status}</span>
+              </div>
+            </div>
+          `;
+        });
+
+        // লেজার হিস্ট্রি
+        const tBox = document.getElementById("tx-history-list");
+        tBox.innerHTML = "";
+        if (data.transactions.length === 0) tBox.innerHTML = `<p class="text-xs text-slate-400">কোন ট্রানজেকশন হয়নি।</p>`;
+        data.transactions.forEach(t => {
+          const isCredit = t.type === 'deposit' || t.type === 'refund';
+          tBox.innerHTML += `
+            <div class="bg-white p-3 rounded-2xl border border-slate-100 flex justify-between items-center text-xs">
+              <div>
+                <p class="font-bold text-slate-800">${t.description}</p>
+                <p class="text-[10px] text-slate-400">${t.reference_id || '-'}</p>
+              </div>
+              <span class="font-black ${isCredit ? 'text-emerald-600' : 'text-red-500'} text-sm">
+                ${isCredit ? '+' : '-'}৳${t.amount}
+              </span>
+            </div>
+          `;
+        });
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  </script>
+</body>
+</html>
