@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Payment History | Follower Vai Shop</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-slate-900 text-slate-100 pb-24">
+  <header class="sticky top-0 z-30 bg-slate-800 border-b border-slate-700 px-4 py-3 flex items-center justify-between max-w-md mx-auto">
+    <a href="index.html" class="text-slate-400 hover:text-white"><i class="fa-solid fa-arrow-left"></i></a>
+    <h2 class="font-bold text-base">পেমেন্ট হিস্টোরি</h2>
+    <div class="w-5"></div>
+  </header>
+
+  <main class="max-w-md mx-auto px-4 pt-4">
+    <div id="historyList" class="space-y-3">
+      <div class="text-center py-10 text-slate-500 text-xs">লোড হচ্ছে...</div>
+    </div>
+  </main>
+
+  <nav class="fixed bottom-0 left-0 right-0 z-40 bg-slate-800/95 backdrop-blur border-t border-slate-700 py-2">
+    <div class="max-w-md mx-auto grid grid-cols-4 text-center">
+      <a href="index.html" class="flex flex-col items-center text-slate-400"><i class="fa-solid fa-house text-lg"></i><span class="text-[11px] mt-1">Home</span></a>
+      <a href="orders.html" class="flex flex-col items-center text-slate-400"><i class="fa-solid fa-list-check text-lg"></i><span class="text-[11px] mt-1">Orders</span></a>
+      <a href="payment.html" class="flex flex-col items-center text-slate-400"><i class="fa-solid fa-wallet text-lg"></i><span class="text-[11px] mt-1">Add Fund</span></a>
+      <a href="payment-history.html" class="flex flex-col items-center text-cyan-400"><i class="fa-solid fa-clock-rotate-left text-lg"></i><span class="text-[11px] mt-1">History</span></a>
+    </div>
+  </nav>
+
+  <script>
+    const WORKER_URL = "https://worker.followervai.shop";
+    const user = JSON.parse(localStorage.getItem("fv_user"));
+    if (!user) window.location.href = "index.html";
+
+    fetch(`${WORKER_URL}/api/deposits/user?userId=${user.id}`)
+      .then(r => r.json())
+      .then(data => {
+        const list = document.getElementById("historyList");
+        if (!data.deposits || !data.deposits.length) {
+          list.innerHTML = `<div class="text-center py-12 text-slate-500 text-sm">কোনো ডিপোজিট রেকর্ড পাওয়া যায়নি।</div>`;
+          return;
+        }
+
+        list.innerHTML = data.deposits.map(d => {
+          let badge = "bg-amber-500/20 text-amber-400 border-amber-500/30";
+          if (d.status === "Approved") badge = "bg-emerald-500/20 text-emerald-400 border-emerald-500/30";
+          if (d.status === "Rejected") badge = "bg-red-500/20 text-red-400 border-red-500/30";
+
+          return `
+            <div class="bg-slate-800 border border-slate-700 p-4 rounded-2xl flex items-center justify-between">
+              <div>
+                <div class="flex items-center gap-2">
+                  <span class="font-bold text-white">${d.method}</span>
+                  <span class="text-xs px-2 py-0.5 rounded-full border font-semibold ${badge}">${d.status}</span>
+                </div>
+                <p class="text-xs text-slate-400 mt-1">TrxID: <span class="font-mono text-slate-200">${d.trx_id}</span></p>
+                <p class="text-[10px] text-slate-500">${d.sender_number}</p>
+              </div>
+              <div class="text-right">
+                <span class="text-base font-black text-cyan-400">+৳${Number(d.amount).toFixed(2)}</span>
+                <span class="text-[10px] text-slate-500 block">TAKA</span>
+              </div>
+            </div>
+          `;
+        }).join('');
+      });
+  </script>
+</body>
+</html>
